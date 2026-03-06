@@ -69,7 +69,7 @@ bool load_data_file(TbSpriteSheet & sheet, offset_list & offsets, const char * f
     // populate sprite data
     for (size_t i = 0; i < num_sprites; ++i) {
         const auto offset = offsets[i].first;
-        const auto size = offsets[i + 1].first - offset;
+        const auto size = offsets[i + 1].first - offset - 1;
         const auto sprite_idx = offsets[i].second;
         auto & sprite = sheet.sprites[sprite_idx];
         auto & data = sheet.data[sprite_idx];
