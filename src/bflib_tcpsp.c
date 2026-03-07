@@ -169,7 +169,7 @@ static TbError send_buffer(TCPsocket socket, const char * buffer, size_t size)
         return Lb_OK;
     }
 
-    NETDBG(9, "Trying to send %u bytes", size);
+    NETDBG(9, "Trying to send %u bytes", (unsigned int)size);
 
     if ((retval = SDLNet_TCP_Send(socket, buffer, size)) != (int) size) {
         NETMSG("Failure to send to socket: %d", retval);
@@ -188,7 +188,7 @@ static void reset_msg(struct Msg * msg)
 
 static void inflate_msg(struct Msg * msg)
 {
-    NETDBG(9, "Inflating to %u bytes", msg->msg_size);
+    NETDBG(9, "Inflating to %u bytes", (unsigned int)msg->msg_size);
 
     msg->state = READ_BODY;
 
@@ -205,7 +205,7 @@ static TbError read_stage(TCPsocket socket, char * buffer, size_t size)
     assert(buffer);
     assert(socket);
 
-    NETDBG(9, "Trying to read %u bytes", size);
+    NETDBG(9, "Trying to read %u bytes", (unsigned int)size);
 
     if ((retval = SDLNet_TCP_Recv(socket, buffer, size)) != (int) size) {
         NETMSG("Failure to read from socket: %d", retval);
@@ -246,7 +246,7 @@ static TbError read_full(TCPsocket socket, struct Msg * msg)
     assert(msg->state == READ_BODY);
     msg->state = READ_FINISHED;
 
-    NETDBG(8, "Read of %u bytes finished", msg->msg_size);
+    NETDBG(8, "Read of %u bytes finished", (unsigned int)msg->msg_size);
 
     return Lb_OK;
 }
@@ -292,7 +292,7 @@ static TbError read_partial(TCPsocket socket, struct Msg * msg, unsigned timeout
     assert(msg->state == READ_BODY);
     msg->state = READ_FINISHED;
 
-    NETDBG(8, "Read of %u bytes finished", msg->msg_size);
+    NETDBG(8, "Read of %u bytes finished", (unsigned int)msg->msg_size);
 
     return Lb_OK;
 }
@@ -439,7 +439,7 @@ static void tcpSP_sendmsg_single(NetUserId destination, const char * buffer, siz
     assert(size > 0);
     assert(!(spstate.ishost && destination == SERVER_ID));
 
-    NETDBG(9, "Starting for buffer of %u bytes to user %u", size, destination);
+    NETDBG(9, "Starting for buffer of %u bytes to user %u", (unsigned int)size, destination);
 
     if (    send_buffer(find_peer_socket(destination), (const char*) &size, 4) == Lb_FAIL ||
             send_buffer(find_peer_socket(destination), buffer, size) == Lb_FAIL) {
@@ -459,7 +459,7 @@ static void tcpSP_sendmsg_all(const char * buffer, size_t size)
 {
     assert(buffer);
     assert(size > 0);
-    NETDBG(9, "Starting for buffer of %u bytes", size);
+    NETDBG(9, "Starting for buffer of %u bytes", (unsigned int)size);
 
     if (spstate.ishost) {
         for (unsigned int i = 0; i < MAX_N_PEERS; ++i)
