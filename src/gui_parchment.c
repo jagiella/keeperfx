@@ -361,7 +361,7 @@ void draw_overhead_room_icons(const struct TbRect *map_area, long block_size, Pl
     {
       if (room_exists(room))
       {
-          long room_visibility = abs(rkind_select - room->kind);
+          long room_visibility = labs(rkind_select - room->kind);
           if ((room_visibility < 2) || (room_visibility >= 4))
             lbDisplay.DrawFlags &= ~Lb_SPRITE_TRANSPAR4;
           else

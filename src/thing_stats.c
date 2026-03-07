@@ -331,7 +331,7 @@ long get_radially_growing_value(long magnitude, long decay_start, long decay_len
     {
         friction = 1;
     }
-    long total_distance = abs((COORD_PER_STL / friction * magnitude + magnitude) / 2); // The intended distance to push the thing.
+    long total_distance = labs((COORD_PER_STL / friction * magnitude + magnitude) / 2); // The intended distance to push the thing.
     if (total_distance > distance) // Never return a value that would go past the epicentre.
     {
         short factor = COORD_PER_STL / friction * 3 / 4; // Creatures slide so move further then expected.
