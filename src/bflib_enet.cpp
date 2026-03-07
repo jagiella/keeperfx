@@ -24,7 +24,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
-#include <enet6/enet.h>
+#include <enet/enet.h>
 #include <cstddef>
 #include <climits>
 
@@ -99,14 +99,14 @@ namespace
     TbError bf_enet_host(const char *session, void *options)
     {
         ENetAddress address;
-        enet_address_build_any(&address, ENET_ADDRESS_TYPE_IPV6);
+        address.host = ENET_HOST_ANY;
         address.port = DEFAULT_PORT;
         if (!*session)
             return Lb_FAIL;
         int port = atoi(session);
         if (port > 0)
             address.port = port;
-        host = enet_host_create(ENET_ADDRESS_TYPE_ANY, &address, 4, NUM_CHANNELS, 0, 0);
+        host = enet_host_create(&address, 4, NUM_CHANNELS, 0, 0);
         if (!host) {
             return Lb_FAIL;
         }
@@ -197,11 +197,11 @@ namespace
         if (buf[0] == '\0') {
             return Lb_FAIL;
         }
-        if (enet_address_set_host(&connect_address, ENET_ADDRESS_TYPE_ANY, buf) < 0) {
+        if (enet_address_set_host(&connect_address, buf) < 0) {
             return Lb_FAIL;
         }
         connect_address.port = port;
-        host = enet_host_create(connect_address.type, NULL, 4, NUM_CHANNELS, 0, 0);
+        host = enet_host_create(NULL, 4, NUM_CHANNELS, 0, 0);
         if (!host)
         {
             return Lb_FAIL;
@@ -249,7 +249,6 @@ namespace
                     }
                     break;
                 case ENET_EVENT_TYPE_DISCONNECT:
-                case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
                     user_id = NetUserId(reinterpret_cast<ptrdiff_t>(ev.peer->data));
                     g_drop_callback(user_id, NETDROP_ERROR);
                     break;
