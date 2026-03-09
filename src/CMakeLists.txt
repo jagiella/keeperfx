@@ -69,3 +69,5 @@ target_link_libraries(keeperfx
 	${AVUTIL_LIBRARY}
 	${SWRESAMPLE_LIBRARY}
 )
+
+install(TARGETS keeperfx)
